@@ -7,7 +7,7 @@
 
 Name:		rccl
 Version:	7.14.0
-Release:	1
+Release:	2
 %{!?rocm_llvm_maj_ver:%global rocm_llvm_maj_ver 23}
 Summary:	ROCm Communication Collectives Library (NCCL for HIP)
 License:	BSD-3-Clause AND MIT
@@ -36,6 +36,8 @@ BuildRequires:	rocm-smi-devel
 BuildRequires:	clang >= %{rocm_llvm_maj_ver}
 BuildRequires:	perl
 BuildRequires:	python3
+# Without fmt, cmake/Dependencies.cmake FetchContent clones github.com/fmtlib/fmt (blocked in mock)
+BuildRequires:	cmake(fmt)
 
 ExclusiveArch:	%{x86_64} %{aarch64}
 
