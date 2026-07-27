@@ -7,7 +7,7 @@
 
 Name:		rccl
 Version:	7.14.0
-Release:	4
+Release:	5
 %{!?rocm_llvm_maj_ver:%global rocm_llvm_maj_ver 23}
 Summary:	ROCm Communication Collectives Library (NCCL for HIP)
 License:	BSD-3-Clause AND MIT
@@ -120,10 +120,19 @@ cd ..
 cd build
 DESTDIR=%{buildroot} /usr/bin/ninja install -j%{?_smp_build_ncpus}%{!?_smp_build_ncpus:8}
 cd ..
-# Normalize cmake package path if upstream dropped under /usr/lib
-if [ -d %{buildroot}/usr/lib/cmake/rccl ] && [ ! -d %{buildroot}%{_libdir}/cmake/rccl ]; then
-	mkdir -p %{buildroot}%{_libdir}/cmake
-	mv %{buildroot}/usr/lib/cmake/rccl %{buildroot}%{_libdir}/cmake/
+# Upstream may install under /usr/lib even with -DCMAKE_INSTALL_LIBDIR=%{_lib}
+if [ -d %{buildroot}/usr/lib ]; then
+	mkdir -p %{buildroot}%{_libdir}
+	# shared library + soname links
+	for f in %{buildroot}/usr/lib/librccl.so*; do
+		[ -e "$f" ] || continue
+		mv "$f" %{buildroot}%{_libdir}/
+	done
+	# cmake package
+	if [ -d %{buildroot}/usr/lib/cmake/rccl ] && [ ! -d %{buildroot}%{_libdir}/cmake/rccl ]; then
+		mkdir -p %{buildroot}%{_libdir}/cmake
+		mv %{buildroot}/usr/lib/cmake/rccl %{buildroot}%{_libdir}/cmake/
+	fi
 	rmdir %{buildroot}/usr/lib/cmake 2>/dev/null || true
 	rmdir %{buildroot}/usr/lib 2>/dev/null || true
 fi
