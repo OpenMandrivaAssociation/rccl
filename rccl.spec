@@ -8,6 +8,7 @@
 Name:		rccl
 Version:	7.14.0
 Release:	1
+%{!?rocm_llvm_maj_ver:%global rocm_llvm_maj_ver 23}
 Summary:	ROCm Communication Collectives Library (NCCL for HIP)
 License:	BSD-3-Clause AND MIT
 Group:		System/Libraries
@@ -24,6 +25,7 @@ Source3:	rocm_version.h
 BuildRequires:	rocm-rpm-macros
 BuildRequires:	cmake
 BuildRequires:	ninja
+BuildRequires:	git-core
 BuildRequires:	rocm-cmake
 BuildRequires:	hipcc
 BuildRequires:	rocminfo
