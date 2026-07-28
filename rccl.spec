@@ -7,7 +7,7 @@
 
 Name:		rccl
 Version:	7.14.0
-Release:	5
+Release:	6
 %{!?rocm_llvm_maj_ver:%global rocm_llvm_maj_ver 23}
 Summary:	ROCm Communication Collectives Library (NCCL for HIP)
 License:	BSD-3-Clause AND MIT
@@ -136,11 +136,14 @@ if [ -d %{buildroot}/usr/lib ]; then
 	rmdir %{buildroot}/usr/lib/cmake 2>/dev/null || true
 	rmdir %{buildroot}/usr/lib 2>/dev/null || true
 fi
+# License is packaged via %%license from the source tree; drop install-tree copy
+rm -f %{buildroot}%{_docdir}/rccl/LICENSE.txt 2>/dev/null || true
 
 %files
 %license LICENSE.txt
 %doc README.md CHANGELOG.md
 %{_libdir}/librccl.so.*
+%{_bindir}/rcclras
 # MSCCL algorithm data
 %{_datadir}/rccl/
 
