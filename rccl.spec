@@ -1,20 +1,18 @@
 # RCCL — ROCm Communication Collectives (NCCL for HIP)
-# Upstream has no therock-7.14 tarball; use rocm-7.2.4 (NCCL 2.27.7), which
-# matches the 7.x HIP/runtime APIs used by TheRock 7.14.
+# TheRock 10.0 publishes rccl.tar.gz on rocm-systems.
 
 # Multi-arch fat HIP + global -flto stalls for hours in ld.lld per gfx*
 %define _disable_lto 1
 
 Name:		rccl
-Version:	7.14.0
-Release:	6
+Version:	10.0.0
+Release:	1
 %{!?rocm_llvm_maj_ver:%global rocm_llvm_maj_ver 23}
 Summary:	ROCm Communication Collectives Library (NCCL for HIP)
 License:	BSD-3-Clause AND MIT
 Group:		System/Libraries
-URL:		https://github.com/ROCm/rccl
-# Closest released tag to TheRock 7.14 (no therock-7.14 asset on this repo)
-Source0:	https://github.com/ROCm/rccl/archive/refs/tags/rocm-7.2.4.tar.gz#/rccl-%{version}.tar.gz
+URL:		https://github.com/ROCm/rocm-systems
+Source0:	https://github.com/ROCm/rocm-systems/releases/download/therock-10.0/rccl.tar.gz#/rccl-%{version}.tar.gz
 # Build-time hipify (not yet packaged separately on OM)
 Source1:	hipify-perl
 # Skip upstream toolchain-linux.cmake (/opt/rocm amdclang defaults)
@@ -51,8 +49,7 @@ broadcast, all-gather, …) for HIP, API-compatible with NCCL.
 GPU targets: gfx803 (Polaris) + gfx1100/1101/1200/1201. Full matrix is in
 %%rocm_gpu_targets_rccl for ABF multi-hour fat builds.
 
-Built from upstream tag rocm-7.2.4 (lib version 2.27.7); packaged as
-%{version} to track the OpenMandriva TheRock 7.14 stack.
+Built from the TheRock 10.0 rocm-systems rccl tarball.
 
 %package devel
 Summary:	Development files for RCCL
@@ -65,7 +62,7 @@ Provides:	rccl-devel = %{EVRD}
 Headers and CMake package for RCCL.
 
 %prep
-%autosetup -n rccl-rocm-7.2.4 -p1
+%autosetup -n rccl -p1
 # hipify-perl on PATH for the build
 install -m 755 %{SOURCE1} %{_builddir}/hipify-perl
 # Stub rocm-core version header used by hip_rocm_version_info.h
