@@ -46,8 +46,8 @@ ExclusiveArch:	%{x86_64} %{aarch64}
 %description
 RCCL implements multi-GPU / multi-node collective operations (all-reduce,
 broadcast, all-gather, …) for HIP, API-compatible with NCCL.
-GPU targets: gfx803 (Polaris) + gfx1100/1101/1200/1201. Full matrix is in
-%%rocm_gpu_targets_rccl for ABF multi-hour fat builds.
+GPU targets: gfx1100/1101/1200/1201. RCCL 10.0's device linker has
+no SGPR table for gfx8xx, so Polaris (gfx803) is omitted.
 
 Built from the TheRock 10.0 rocm-systems rccl tarball.
 
@@ -86,7 +86,7 @@ export LDFLAGS=$(printf '%s' "%{?__global_ldflags}" | sed -E 's/-mfpmath=[^ ]+//
 # Imperative cmake: OM %%cmake macro can drop trailing -D flags with ';' values
 mkdir -p build
 cd build
-RCCL_GPU_TARGETS='gfx803;gfx1100;gfx1101;gfx1200;gfx1201'
+RCCL_GPU_TARGETS='gfx1100;gfx1101;gfx1200;gfx1201'
 /usr/bin/cmake .. \
 	-DCMAKE_SKIP_RPATH=ON \
 	-DCMAKE_INSTALL_PREFIX=%{_prefix} \
