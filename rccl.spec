@@ -48,8 +48,6 @@ BuildRequires:	cmake(rocprofiler-register)
 # getROCmVersion() / <rocm-core/rocm_version.h>
 BuildRequires:	cmake(rocm-core)
 
-ExclusiveArch:	%{x86_64} %{aarch64}
-
 %description
 RCCL implements multi-GPU / multi-node collective operations (all-reduce,
 broadcast, all-gather, …) for HIP, API-compatible with NCCL.
