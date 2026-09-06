@@ -62,8 +62,8 @@ NVTX3_RANGE_ADD_PAYLOAD still compiles, but make that macro a no-op.
  // Create an NVTX range with the function name as the range name. Use RAII pattern.
  // @param T Type ID of the NVTX payload (pointer for variable-size payloads).
 +#if defined(NVTX_NO_IMPL) || defined(NVTX_DISABLE)
-+#define NVTX3_RANGE(T) ncclOptionalNvtxPayloadRange<T> nvtx3_range__
-+#define NVTX3_RANGE_ADD_PAYLOAD(N, S, P) ((void)0)
++#define NVTX3_RANGE(T) ncclOptionalNvtxPayloadRange<T> nvtx3_range__;
++#define NVTX3_RANGE_ADD_PAYLOAD(N, S, P) do {} while (0)
 +#else
  #define NVTX3_RANGE(T) \
    ncclOptionalNvtxPayloadRange<T> nvtx3_range__; \
