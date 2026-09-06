@@ -21,6 +21,7 @@ Source2:	empty-toolchain.cmake
 Source3:	rocm_version.h
 # Tuner include, nvtx domain guard, iostream, aarch64 cpuid
 Patch0:		0001-omv-fhs-clang23-aarch64.patch
+Patch1:		0002-missing-posix-std-headers.patch
 
 BuildRequires:	rocm-rpm-macros
 BuildRequires:	cmake
