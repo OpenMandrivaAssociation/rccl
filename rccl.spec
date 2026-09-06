@@ -147,5 +147,9 @@ rm -f %{buildroot}%{_docdir}/rccl/LICENSE.txt 2>/dev/null || true
 
 %files devel
 %{_includedir}/rccl/
+# NCCL-shaped public headers (torch / device API)
+%{_includedir}/nccl.h
+%{_includedir}/nccl_device.h
+%{_includedir}/nccl_device/
 %{_libdir}/librccl.so
 %{_libdir}/cmake/rccl/
