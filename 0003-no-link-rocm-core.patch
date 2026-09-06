@@ -1,0 +1,19 @@
+Do not link librocm-core; OM does not ship it.
+
+getROCmVersion is provided inline by the FHS rocm_version.h stub.
+
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -1119,10 +1119,8 @@
+ # trees (e.g. TheRock pip wheels) that ship no unversioned developer symlink.
+ target_link_libraries(rccl PRIVATE   hsa-runtime64::hsa-runtime64)
+ target_link_libraries(rccl PRIVATE   ${SMI_LIBRARIES})
+-# librocm-core provides getROCmVersion() for reporting the runtime ROCm version.
+-if(ROCM_MAJOR_VERSION GREATER_EQUAL 6)
+-  target_link_libraries(rccl PRIVATE -L${ROCM_PATH}/lib -lrocm-core)
+-endif()
++# librocm-core provides getROCmVersion(). OM has no rocm-core package;
++# src/init.cc uses the inline stub in the FHS rocm_version.h.
+ # Wrap fmt in $<BUILD_INTERFACE:...> so it's only used while building rccl
+ # and is omitted from the exported rccl-targets export set. Without this,
+ # a FetchContent-built fmt-header-only target leaks into rccl's link
