@@ -19,6 +19,8 @@ Source1:	hipify-perl
 Source2:	empty-toolchain.cmake
 # FHS stub for <rocm-core/rocm_version.h> (no rocm-core package on OM)
 Source3:	rocm_version.h
+# Tuner include, nvtx domain guard, iostream, aarch64 cpuid
+Patch0:		0001-omv-fhs-clang23-aarch64.patch
 
 BuildRequires:	rocm-rpm-macros
 BuildRequires:	cmake
