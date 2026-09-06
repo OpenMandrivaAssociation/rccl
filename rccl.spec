@@ -17,12 +17,11 @@ Source0:	https://github.com/ROCm/rocm-systems/releases/download/therock-10.0/rcc
 Source1:	hipify-perl
 # Skip upstream toolchain-linux.cmake (/opt/rocm amdclang defaults)
 Source2:	empty-toolchain.cmake
-# FHS stub for <rocm-core/rocm_version.h> (no rocm-core package on OM)
-Source3:	rocm_version.h
 # Tuner include, nvtx domain guard, iostream, aarch64 cpuid
 Patch0:		0001-omv-fhs-clang23-aarch64.patch
 Patch1:		0002-missing-posix-std-headers.patch
-Patch2:		0003-no-link-rocm-core.patch
+# Link librocm-core from the default libdir, not hardcoded /usr/lib
+Patch2:		0003-link-rocm-core-from-libdir.patch
 
 BuildRequires:	rocm-rpm-macros
 BuildRequires:	cmake
@@ -44,6 +43,8 @@ BuildRequires:	cmake(fmt)
 BuildRequires:	pkgconfig(libdrm)
 # RCCL_ROCPROFILER_REGISTER defaults ON for ROCm >= 6.1
 BuildRequires:	cmake(rocprofiler-register)
+# getROCmVersion() / <rocm-core/rocm_version.h>
+BuildRequires:	cmake(rocm-core)
 
 ExclusiveArch:	%{x86_64} %{aarch64}
 
@@ -69,9 +70,6 @@ Headers and CMake package for RCCL.
 %autosetup -n rccl -p1
 # hipify-perl on PATH for the build
 install -m 755 %{SOURCE1} %{_builddir}/hipify-perl
-# Stub rocm-core version header used by hip_rocm_version_info.h
-mkdir -p %{_builddir}/include-stub/rocm-core
-cp -a %{SOURCE3} %{_builddir}/include-stub/rocm-core/rocm_version.h
 
 %build
 export PATH="%{_builddir}:$PATH"
@@ -82,7 +80,6 @@ export CXX=hipcc
 export CC=clang
 export HIPCXX=clang
 CXXFLAGS=$(printf '%s' "%{optflags}" | sed -E 's/-mfpmath=[^ ]+//g; s/ -m[a-z0-9+.=]+//g')
-CXXFLAGS="$CXXFLAGS -I%{_builddir}/include-stub"
 export CXXFLAGS
 export CFLAGS="$CXXFLAGS"
 export LDFLAGS=$(printf '%s' "%{?__global_ldflags}" | sed -E 's/-mfpmath=[^ ]+//g; s/ -m[a-z0-9+.=]+//g')
