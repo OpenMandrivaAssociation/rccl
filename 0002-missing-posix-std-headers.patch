@@ -1,12 +1,11 @@
-Missing POSIX/C++ headers that x86 libstdc++ used to pull in transitively.
+Missing POSIX/C++ headers that some libstdc++ setups pull in transitively.
 
-env.cc: strcasecmp needs <strings.h> (fails on aarch64 and znver1).
-net.cc: std::map needs <map> (failed on aarch64 after env.cc).
+env.cc: strcasecmp needs <strings.h>.
+net.cc: std::map needs <map>.
 
 --- a/src/include/debug.h
 +++ b/src/include/debug.h
-@@ -11,6 +11,9 @@
- #include "nccl.h"
+@@ -12,6 +12,9 @@
  #include "nccl_common.h"
  #include <stdio.h>
  #include <thread>
@@ -18,8 +17,7 @@ net.cc: std::map needs <map> (failed on aarch64 after env.cc).
  // Conform to pthread and NVTX standard
 --- a/src/transport/net.cc
 +++ b/src/transport/net.cc
-@@ -21,6 +21,8 @@
- #include "shm.h"
+@@ -22,6 +22,8 @@
  #include "compiler.h"
  #include <atomic>
  #include <assert.h>
