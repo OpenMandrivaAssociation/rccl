@@ -22,6 +22,8 @@ Patch0:		0001-omv-fhs-clang23-aarch64.patch
 Patch1:		0002-missing-posix-std-headers.patch
 # Link librocm-core from the default libdir, not hardcoded /usr/lib
 Patch2:		0003-link-rocm-core-from-libdir.patch
+# NVTX C APIs are still emitted when ROCTX is off; OM has no libnvToolsExt
+Patch3:		0004-nvtx-no-impl-no-c-api.patch
 
 BuildRequires:	rocm-rpm-macros
 BuildRequires:	cmake
