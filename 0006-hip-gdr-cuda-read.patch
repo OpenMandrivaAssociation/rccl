@@ -1,0 +1,18 @@
+--- a/src/include/gdrwrap.h
++++ b/src/include/gdrwrap.h
+@@ -249,6 +249,15 @@
+   return ncclSuccess;
+ }
+ 
++// x86_64 flushes with a direct load. Other arches call this. The HIP path
++// maps the buffer host-visible, so a memcpy is the PCI read. The gdrcopy
++// definition below is not compiled for HIP.
++static ncclResult_t ncclGdrCudaRead(void* gdrHandle, void* dst, const void* src, size_t size) {
++  (void)gdrHandle;
++  memcpy(dst, src, size);
++  return ncclSuccess;
++}
++
+ static ncclResult_t ncclGdrCudaFree(void* gdrHandle, struct ncclMemManager* manager) {
+   gdr_mem_desc_t *md = (gdr_mem_desc_t*)gdrHandle;
+   NCCLCHECK(ncclCudaFree(md->gdrDevMem, manager));

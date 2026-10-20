@@ -27,6 +27,8 @@ Patch2:		0004-nvtx-no-impl-no-c-api.patch
 # hipify of linux_socket_pair.cc calls strerror via SYSCHECK/WARN. The
 # source only included unistd.h, so the host compile does not see strerror.
 Patch3:		0005-socket-pair-string-h.patch
+# aarch64 GDR flush calls ncclGdrCudaRead; the HIP branch never defined it.
+Patch4:		0006-hip-gdr-cuda-read.patch
 
 BuildRequires:	rocm-rpm-macros
 BuildRequires:	cmake
