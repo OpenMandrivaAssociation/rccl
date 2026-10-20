@@ -24,6 +24,9 @@ Patch1:		0002-missing-posix-std-headers.patch
 # NVTX C APIs are still emitted when ROCTX is off; OM has no libnvToolsExt.
 # 10.1 already find_package(rocm-core) and links it from the default libdir.
 Patch2:		0004-nvtx-no-impl-no-c-api.patch
+# hipify of linux_socket_pair.cc calls strerror via SYSCHECK/WARN. The
+# source only included unistd.h, so the host compile does not see strerror.
+Patch3:		0005-socket-pair-string-h.patch
 
 BuildRequires:	rocm-rpm-macros
 BuildRequires:	cmake

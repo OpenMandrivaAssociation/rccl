@@ -1,0 +1,10 @@
+--- a/src/os/linux_socket_pair.cc
++++ b/src/os/linux_socket_pair.cc
+@@ -8,6 +8,7 @@
+ #include "checks.h"
+ 
+ #include <unistd.h>
++#include <string.h>
+ 
+ // TODO: switch from pipe() to socketpair(AF_UNIX, SOCK_STREAM, 0) to align with the Windows implementation
+ ncclResult_t ncclOsSocketPairCreate(ncclSocketPairDescriptor pair[2]) {
