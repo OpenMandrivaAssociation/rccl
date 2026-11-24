@@ -1,28 +1,28 @@
 # RCCL — ROCm Communication Collectives (NCCL for HIP)
-# TheRock 10.1 publishes rccl.tar.gz on rocm-systems.
+# TheRock 10.2 publishes rccl.tar.gz on rocm-systems.
 
 # Multi-arch fat HIP + global -flto stalls for hours in ld.lld per gfx*
 %define _disable_lto 1
 
 Name:		rccl
-Version:	10.1.0
+Version:	10.2.0
 Release:	1
 %{!?rocm_llvm_maj_ver:%global rocm_llvm_maj_ver 23}
 Summary:	ROCm Communication Collectives Library (NCCL for HIP)
 License:	BSD-3-Clause AND MIT
 Group:		System/Libraries
 URL:		https://github.com/ROCm/rocm-systems
-Source0:	https://github.com/ROCm/rocm-systems/releases/download/therock-10.1/rccl.tar.gz#/rccl-%{version}.tar.gz
+Source0:	https://github.com/ROCm/rocm-systems/releases/download/therock-10.2/rccl.tar.gz#/rccl-%{version}.tar.gz
 # Build-time hipify (not yet packaged separately on OM)
 Source1:	hipify-perl
 # Skip upstream toolchain-linux.cmake (/opt/rocm amdclang defaults)
 Source2:	empty-toolchain.cmake
 # nvtx domain guard, tuner include order, iostream for ipc_init.cu.
-# aarch64 cpuid guards are already upstream in 10.1.
+# aarch64 cpuid guards are already upstream in 10.2.
 Patch0:		0001-omv-fhs-clang23-aarch64.patch
 Patch1:		0002-missing-posix-std-headers.patch
 # NVTX C APIs are still emitted when ROCTX is off; OM has no libnvToolsExt.
-# 10.1 already find_package(rocm-core) and links it from the default libdir.
+# 10.2 already find_package(rocm-core) and links it from the default libdir.
 Patch2:		0004-nvtx-no-impl-no-c-api.patch
 # hipify of linux_socket_pair.cc calls strerror via SYSCHECK/WARN. The
 # source only included unistd.h, so the host compile does not see strerror.
@@ -56,10 +56,10 @@ BuildRequires:	cmake(rocm-core)
 %description
 RCCL implements multi-GPU / multi-node collective operations (all-reduce,
 broadcast, all-gather, …) for HIP, API-compatible with NCCL.
-GPU targets: gfx1100/1101/1200/1201. RCCL 10.1's device linker has
+GPU targets: gfx1100/1101/1200/1201. RCCL 10.2's device linker has
 no SGPR table for gfx8xx, so Polaris (gfx803) is omitted.
 
-Built from the TheRock 10.1 rocm-systems rccl tarball.
+Built from the TheRock 10.2 rocm-systems rccl tarball.
 
 %package devel
 Summary:	Development files for RCCL
@@ -73,7 +73,7 @@ Headers and CMake package for RCCL.
 
 %prep
 %setup -q -n rccl
-# 10.1 ships this one file with CRLF. Normalize before patching or the
+# 10.2 ships this one file with CRLF. Normalize before patching or the
 # iostream hunk is rejected for different line endings.
 sed -i 's/\r$//' src/algorithms/dda/ipc/ipc_init.cu
 %autopatch -p1
