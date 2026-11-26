@@ -151,8 +151,7 @@ rm -f %{buildroot}%{_docdir}/rccl/LICENSE.txt 2>/dev/null || true
 %doc README.md CHANGELOG.md
 %{_libdir}/librccl.so.*
 %{_bindir}/rcclras
-# MSCCL algorithm data
-%{_datadir}/rccl/
+# 10.2 compiles tuner/*.csv into librccl.so. share/rccl is Debian-only.
 
 %files devel
 %{_includedir}/rccl/
